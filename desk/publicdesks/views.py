@@ -1,13 +1,11 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, View
-from .models import Ann, UserReply
+from .models import Ann, UserReply, User
 from .filters import AnnFilter
 from .forms import AnnForm
 from django.urls import reverse_lazy
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
-
-
 
 
 class AnnList(ListView):
@@ -93,6 +91,16 @@ class CreateAnn(PermissionRequiredMixin, CreateView):
     model = Ann
     # и новый шаблон, в котором используется форма.
     template_name = 'edit_ann.html'
+    raise_exception = True
+
+    def form_valid(self, form):
+        # создаем форму, но не отправляем его в БД, пока просто держим в памяти
+        fields = form.save(commit=False)
+        # Через реквест передаем недостающую форму, которая обязательна
+        fields.author = User.objects.get(username=self.request.user)
+        # Наконец сохраняем в БД
+        fields.save()
+        return super().form_valid(form)
 
     #
     # def send_notification(self, request, *args, **kwargs):

@@ -11,7 +11,6 @@ class AnnForm(forms.ModelForm):
             'title',
             'text',
             'category',
-            'author'
 
         ]
 
