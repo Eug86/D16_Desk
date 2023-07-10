@@ -1,0 +1,16 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block content %}
+<h1>Объявление</h1>
+{% if user.is_authenticated %}
+    <h2>User: {{ user.get_username }}</h2>
+{% endif %}
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save" />
+</form>
+{% endblock content %}

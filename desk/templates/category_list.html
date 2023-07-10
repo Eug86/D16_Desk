@@ -1,0 +1,73 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+{% load custom_tags %}
+
+<!-- Название у нас будет products -->
+{% block title %}
+Anns
+{% endblock title %}
+
+{% block content %}
+<!-- В контенте на странице мы выводим все товары -->
+   <h1>Все объявления <i>({{ Anns|length }})</i> </h1>
+    {% if is_not_subscriber %}
+        <p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sm">Подписаться</a></p>
+    {% endif %}
+    <hr>
+   {% if category_ann_list %}
+       <table> <!-- Начинаем описывать таблицу -->
+           <tr> <!-- Добавляем строку -->
+               <td> <!-- Добавляем ячейку в строку -->
+                   Название
+               </td>
+               <td> <!-- Добавляем ещё одну ячейку в строку и так далее -->
+                   Дата
+               </td>
+               <td>
+                   Категория
+               </td>
+               <td>
+                   Предпросмотр
+               </td>
+
+               {% for ann in category_annt_list %}
+                <tr>
+               <!-- Не забываем, что переменные в шаблоне ничем не отличаются
+                от переменных в Python. Здесь также можно получать доступ к
+                полям объекта модели. Например, здесь мы выводим имя,
+                в следующем столбце описание, и т.д.  -->
+               <td>{{ ann.title }}</td>
+               <td>{{ ann.time_in|date:'d M Y' }}</td>
+               <td><a href="{% url 'category_list' annt.category.id %}">{{ ann.category }}</a></td>
+               <td>{{ ann.text|truncatewords:20 }}</td>
+               </tr> <!-- Не забываем закрыть HTML-тег строки -->
+                {% endfor %}
+       </table> <!-- ... и таблицы -->
+   {% else %}
+
+       <h2>Объявлений нет!</h2>
+   {% endif %}
+
+ {# Добавляем пагинацию на страницу #}
+
+   {# Информация о предыдущих страницах #}
+   {% if page_obj.has_previous %}
+       <a href="?{% url_replace page=1 %}">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+{% endblock content %}
