@@ -1,16 +1,17 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
 {% load custom_tags %}
+{% load static %}
+<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
 
 {% block content %}
 <h1>Объявление</h1>
-{% if user.is_authenticated %}
-    <h2>User: {{ user.get_username }}</h2>
-{% endif %}
 <hr>
-<form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_div }}
-    <input type="submit" value="Save" />
-</form>
+<div id="teams_form">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <input class="input_button" type="submit" value="Save" />
+    </form>
+</div>
 {% endblock content %}

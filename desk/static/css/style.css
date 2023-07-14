@@ -65,3 +65,23 @@ h6 {
     padding: 10px;
     color: #8D8173;
 }
+
+.input_button {
+    display: block;
+    margin: 0 auto;
+}
+
+#teams_form {
+    position: absolute;
+    width: 200px;
+    height: 150px;
+    left: 50%;
+    top: 50%;
+    margin-left: -100px;
+    margin-top: -100px;
+
+}
+
+form {
+    padding: 0;
+}

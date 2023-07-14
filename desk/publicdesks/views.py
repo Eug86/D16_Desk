@@ -1,9 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from .models import Ann, User
 from .forms import AnnForm
-
 
 
 def ann_list(request):
@@ -34,6 +33,15 @@ class CreateAnn(PermissionRequiredMixin, CreateView):
         # Наконец сохраняем в БД
         fields.save()
         return super().form_valid(form)
+
+class EditAnn(PermissionRequiredMixin, UpdateView):
+    permission_required = ('publicdesks.change_ann',)
+    # Указываем нашу разработанную форму
+    form_class = AnnForm
+    # модель товаров
+    model = Ann
+    # и новый шаблон, в котором используется форма.
+    template_name = 'edit_ann.html'
 
 
 

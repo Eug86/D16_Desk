@@ -15,4 +15,12 @@ ann
 <h3>---{{ ann.time_in|date:'d M Y' }}---</h3>
 <h1>{{ ann.text }}</h1>
 <img class="image" src="{{ ann.upload.url }}" alt="My image" width="300" height="300">
+
+<form method="LINK" action="{% url 'edit_ann' pk=ann.pk %}">
+    <input class="input_button"  type="submit" value="Править">
+</form>
+<hr>
+<form method="LINK" action="/anns/">
+    <input class="input_button"  type="submit" value="Все объявления">
+</form>
 {% endblock content %}
