@@ -1,0 +1,18 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+{% load custom_tags %}
+{% load static %}
+<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
+
+
+{% block title %}
+ann
+{% endblock title %}
+
+
+{% block content %}
+<h2>{{ ann.title }}:</h2>
+<h3>---{{ ann.time_in|date:'d M Y' }}---</h3>
+<h1>{{ ann.text }}</h1>
+<img class="image" src="{{ ann.upload.url }}" alt="My image" width="300" height="300">
+{% endblock content %}

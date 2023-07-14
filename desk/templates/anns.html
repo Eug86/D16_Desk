@@ -1,47 +1,48 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
 {% load custom_tags %}
-
+{% load static %}
+<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
 
 {% block title %}
-Anns
+anns
 {% endblock title %}
 
 {% block content %}
 
-   <h1>Все объявления <i>({{ Anns|length }})</i> </h1>
+   <h1 class="h1_anns">Все объявления <i>({{ anns|length }})</i> </h1>
 
     <hr>
-   {% if Anns %}
-       <table> <!-- Начинаем описывать таблицу -->
+   {% if anns %}
+       <table class="table_anns"> <!-- Начинаем описывать таблицу -->
            <tr> <!-- Добавляем строку -->
                <td> <!-- Добавляем ячейку в строку -->
-                   Название
+                   <b>Название</b>
                </td>
                <td> <!-- Добавляем ещё одну ячейку в строку и так далее -->
-                   Дата
+                   <b>Дата</b>
                </td>
                <td>
-                   Категория
+                   <b>Категория</b>
                </td>
                <td>
-                   Предпросмотр
+                   <b>Предпросмотр</b>
                </td>
                <td>
-                   Автор
+                   <b>Автор</b>
                </td>
 
-                {% for ann in Anns %}
+                {% for ann in anns %}
                 <tr>
                <!-- Не забываем, что переменные в шаблоне ничем не отличаются
                 от переменных в Python. Здесь также можно получать доступ к
                 полям объекта модели. Например, здесь мы выводим имя,
                 в следующем столбце описание, и т.д.  -->
 
-                <td>{{ ann.title }}</td>
+                <td><a href="{% url 'ann_detail' pk=ann.pk %}">{{ ann.title }}</a></td>
                 <td>{{ ann.time_in|date:'d M Y' }}</td>
                 <td>{{ ann.category }}</a></td>
-                <td>{{ ann.text|truncatewords:20 }}</td>
+                <td>{{ ann.preview }}</td>
                 <td>{{ ann.author }}</td>
                 {% endfor %}
                 </tr> <!-- Не забываем закрыть HTML-тег строки -->

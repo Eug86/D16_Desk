@@ -1,12 +1,11 @@
 from django.urls import path
 # Импортируем созданное нами представление
-from .views import AnnList, AnnDetail, SearchList, CreateAnn, DeleteAnn, EditAnn
+from .views import ann_list, ann_detail, CreateAnn
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-   path('', AnnList.as_view(), name='ann_list'),
-   path('<int:pk>', AnnDetail.as_view(), name='ann_detail'),
-   path('search', SearchList.as_view(), name='ann_search'),
-   path('create', CreateAnn.as_view(), name='ann_create'),
-   path('<int:pk>/edit', EditAnn.as_view(), name='ann_edit'),
-   path('<int:pk>/delete', DeleteAnn.as_view(), name='ann_delete'),
-]
+   path('', ann_list, name='anns_list'),
+   path('<int:pk>', ann_detail, name='ann_detail'),
+   path('create', CreateAnn.as_view(), name='ann_create')
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
