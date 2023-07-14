@@ -29,10 +29,14 @@ class Ann(models.Model):
     def get_absolute_url(self):
         return reverse('ann_detail', args=[str(self.id)])
 
+    def preview(self):
+        preview = f'{self.text[:50]} ...'
+        return preview
+
 
 class UserReply(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
-    ann = models.ForeignKey(Ann, on_delete=models.CASCADE)
+    ann = models.ForeignKey(Ann, on_delete=models.CASCADE, related_name='anns')
     status = models.BooleanField(default=False)
     time_in = models.DateTimeField(auto_now_add=True)
