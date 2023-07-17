@@ -40,3 +40,6 @@ class UserReply(models.Model):
     ann = models.ForeignKey(Ann, on_delete=models.CASCADE, related_name='anns')
     status = models.BooleanField(default=False)
     time_in = models.DateTimeField(auto_now_add=True)
+
+    def get_absolute_url(self):
+        return f'http://127.0.0.1:8000/anns/{self.ann.id}'

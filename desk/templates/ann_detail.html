@@ -19,6 +19,18 @@ ann
 <form method="LINK" action="{% url 'edit_ann' pk=ann.pk %}">
     <input class="input_button"  type="submit" value="Править">
 </form>
+<form method="LINK" action="{% url 'edit_userreply' pk=ann.pk %}">
+    <input class="input_button"  type="submit" value="Отклик">
+</form>
+<hr>
+<h2>Отклики(<i>{{ userreplys_count }}</i>):</h2>
+{% for userreply in userreplys %}
+
+    <strong>{{ userreply.author }} - {{ userreply.time_in }}</strong>
+<br/>
+    {{ userreply.text }}
+</br>
+{% endfor %}
 <hr>
 <form method="LINK" action="/anns/">
     <input class="input_button"  type="submit" value="Все объявления">

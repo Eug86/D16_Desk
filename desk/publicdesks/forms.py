@@ -1,5 +1,5 @@
 from django import forms
-from .models import Ann
+from .models import Ann, UserReply
 from django.core.exceptions import ValidationError
 
 
@@ -34,3 +34,12 @@ class AnnForm(forms.ModelForm):
                 "Название должно начинаться с заглавной буквы"
             )
         return name
+
+
+class UserReplyForm(forms.ModelForm):
+
+    class Meta:
+        model = UserReply
+        fields = [
+            'text',
+        ]
