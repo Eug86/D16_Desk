@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django_filters',
     'publicdesks',
+    'accounts'
 ]
 
 SITE_ID = 1

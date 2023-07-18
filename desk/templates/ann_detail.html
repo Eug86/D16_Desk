@@ -28,8 +28,12 @@ ann
 
     <strong>{{ userreply.author }} - {{ userreply.time_in }}</strong>
 <br/>
-    {{ userreply.text }}
+    <a href="{% url 'userreply_detail' userreply.id %}">{{ userreply.text }}</a>
+    {% if userreply.approved_userreply %}
+        <img src="{% static '../media/image/ok.jpg' %}" alt="approve" width="15" height="15">
+    {% endif %}
 </br>
+
 {% endfor %}
 <hr>
 <form method="LINK" action="/anns/">

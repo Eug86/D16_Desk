@@ -38,8 +38,24 @@ class UserReply(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     ann = models.ForeignKey(Ann, on_delete=models.CASCADE, related_name='anns')
-    status = models.BooleanField(default=False)
+    approved_userreply = models.BooleanField(default=False, null=True, blank=True)
     time_in = models.DateTimeField(auto_now_add=True)
+
+    def approve(self):
+        ''' approve response/comment '''
+        self.approved_userreply = True
+        self.save()
+
+    def disapprove(self):
+        ''' disapprove response/comment '''
+        self.approved_userreply = False
+        self.save()
+
 
     def get_absolute_url(self):
         return f'http://127.0.0.1:8000/anns/{self.ann.id}'
+
+
+
+
+

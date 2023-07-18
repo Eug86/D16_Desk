@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import CreateView, UpdateView
 from .models import Ann, User, UserReply
@@ -74,6 +74,22 @@ def userreply_detail(request, pk_rep):
     return render(request, 'userreply_detail.html', {'userreply': userreply})
 
 
+def userreply_approve(request, pk_rep):
+    ''' Accept response - Button on 'article-detail' and 'dashboard' pages'''
+    userreply = get_object_or_404(UserReply, pk=pk_rep)
+    userreply.approve()
+    return redirect('ann_detail', pk=userreply.ann.pk)
 
 
+def userreply_disapprove(request, pk_rep):
+    ''' Unaccept response and remove approvement - Button on 'article-detail' and 'dashboard' pages'''
+    userreply = get_object_or_404(UserReply, pk=pk_rep)
+    userreply.disapprove()
+    return redirect('ann_detail', pk=userreply.ann.pk)
 
+
+def userreply_remove(request, pk):
+    ''' Delete comment - Button on 'article-detail' and 'dashboard' pages'''
+    userreply = get_object_or_404(UserReply, pk=pk)
+    userreply.delete()
+    return redirect('ann_detail', pk=userreply.ann.pk)
