@@ -1,6 +1,4 @@
 {% extends 'flatpages/default.html' %}
-{% load custom_filters %}
-{% load custom_tags %}
 {% load static %}
 <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
 
@@ -50,29 +48,6 @@ anns
    {% else %}
        <!-- Если объявлений нет, говорим, что объявлений нет ;) -->
        <h2>Объявлений нет!</h2>
-   {% endif %}
-
- {# Добавляем пагинацию на страницу #}
-
-   {# Информация о предыдущих страницах #}
-   {% if page_obj.has_previous %}
-       <a href="?{% url_replace page=1 %}">1</a>
-       {% if page_obj.previous_page_number != 1 %}
-           ...
-           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
-       {% endif %}
-   {% endif %}
-
-   {# Информация о текущей странице #}
-   {{ page_obj.number }}
-
-   {# Информация о следующих страницах #}
-   {% if page_obj.has_next %}
-       <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
-       {% if paginator.num_pages != page_obj.next_page_number %}
-           ...
-           <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
-       {% endif %}
    {% endif %}
 {% if user.is_authenticated %}
 <form method="LINK" action="/anns/create">

@@ -21,13 +21,18 @@
                 </div>
                 <div>
                     <form>
-                        <input type="button" value="Выйти" onClick='location.href="/accounts/logout/"'>
+                        <a class="btn btn-primary btn-sm" href="{% url 'page_user' user.id %}" role="button">Профиль<span class="glyphicon glyphicon-ok"></span></a>
+                    </form>
+                </div>
+                <div>
+                    <form>
+                        <a class="btn btn-primary btn-sm" href="{% url 'logout' %}" role="button">Выйти<span class="glyphicon glyphicon-ok"></span></a>
                     </form>
                 </div>
                 {% else %}
                 <div>
                 <form>
-                    <input type="button" value="Войти" onClick='location.href="/accounts/login/"'>
+                    <a class="btn btn-primary btn-sm" href="{% url 'login' %}" role="button">Войти<span class="glyphicon glyphicon-ok"></span></a>
                 </form>
                 </div>
                 {% endif %}

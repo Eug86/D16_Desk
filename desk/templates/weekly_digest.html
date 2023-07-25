@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2> Здравствуй! Новые объявления за неделю!</h2>
+<ul>
+    {% for ann in anns %}
+        <li><a href="{{ link }}{{ ann.get_absolute_url }}">{{ ann.title }}</a></li>
+    {% endfor %}
+</ul>
+</body>
+</html>

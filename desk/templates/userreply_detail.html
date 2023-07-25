@@ -1,6 +1,4 @@
 {% extends 'flatpages/default.html' %}
-{% load custom_filters %}
-{% load custom_tags %}
 {% load static %}
 <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
 
@@ -13,6 +11,7 @@ userreply
 {% block content %}
 <h2>---{{ userreply.time_in|date:'d M Y' }}---</h2>
 <h1>{{ userreply.text }}</h1>
+
 {% if not userreply.approved_userreply %}
     <a class="btn btn-primary btn-sm" href="{% url 'userreply_approve' userreply.id %}" role="button">Accepte<span class="glyphicon glyphicon-ok"></span></a>
     <a class="btn btn-danger btn-sm" href="{% url 'userreply_remove' userreply.id %}" role="button">Delete<span class="glyphicon glyphicon-remove"></span></a>
@@ -20,4 +19,5 @@ userreply
     <a class="btn btn-secondary btn-sm" href="{% url 'userreply_disapprove' userreply.id %}" role="button">Unaccepte<span class="glyphicon glyphicon-remove"></span></a>
     <a class="btn btn-danger btn-sm disabled" role="button" aria-disabled="true">Delete<span class="glyphicon glyphicon-remove"></span></a>
 {% endif %}
+
 {% endblock content %}

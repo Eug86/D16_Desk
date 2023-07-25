@@ -41,6 +41,9 @@ class UserReply(models.Model):
     approved_userreply = models.BooleanField(default=False, null=True, blank=True)
     time_in = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.text}'
+
     def approve(self):
         ''' approve response/comment '''
         self.approved_userreply = True

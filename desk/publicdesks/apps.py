@@ -2,5 +2,7 @@ from django.apps import AppConfig
 
 
 class PublicdesksConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
     name = 'publicdesks'
+
+    def ready(self):
+        import publicdesks.signals

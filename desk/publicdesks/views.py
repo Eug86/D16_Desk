@@ -1,8 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from .models import Ann, User, UserReply
 from .forms import AnnForm, UserReplyForm
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
 def ann_list(request):
@@ -18,6 +21,7 @@ def ann_detail(request, pk):
     return render(request, 'ann_detail.html', {'ann': ann, 'userreplys': userreplys, 'userreplys_count': userreplys_count})
 
 
+@method_decorator(login_required, name='dispatch')
 class CreateAnn(PermissionRequiredMixin, CreateView):
     permission_required = ('publicdesks.add_ann',)
     # Указываем нашу разработанную форму
@@ -38,6 +42,7 @@ class CreateAnn(PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+@method_decorator(login_required, name='dispatch')
 class EditAnn(PermissionRequiredMixin, UpdateView):
     permission_required = ('publicdesks.change_ann',)
     # Указываем нашу разработанную форму
@@ -48,6 +53,17 @@ class EditAnn(PermissionRequiredMixin, UpdateView):
     template_name = 'edit_ann.html'
 
 
+@method_decorator(login_required, name='dispatch')
+class DeleteAnn(PermissionRequiredMixin, DeleteView):
+    permission_required = ('publicdesks.delete_ann',)
+    # модель товаров
+    model = Ann
+    # и новый шаблон, в котором используется форма.
+    template_name = 'delete_ann.html'
+    success_url = reverse_lazy('anns_list')
+
+
+@method_decorator(login_required, name='dispatch')
 class CreateUserReply(PermissionRequiredMixin, CreateView):
     permission_required = ('publicdesks.add_userreply',)
     # Указываем нашу разработанную форму
@@ -69,11 +85,13 @@ class CreateUserReply(PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+@login_required()
 def userreply_detail(request, pk_rep):
     userreply = get_object_or_404(UserReply, pk=pk_rep)
     return render(request, 'userreply_detail.html', {'userreply': userreply})
 
 
+@login_required()
 def userreply_approve(request, pk_rep):
     ''' Accept response - Button on 'article-detail' and 'dashboard' pages'''
     userreply = get_object_or_404(UserReply, pk=pk_rep)
@@ -81,6 +99,7 @@ def userreply_approve(request, pk_rep):
     return redirect('ann_detail', pk=userreply.ann.pk)
 
 
+@login_required()
 def userreply_disapprove(request, pk_rep):
     ''' Unaccept response and remove approvement - Button on 'article-detail' and 'dashboard' pages'''
     userreply = get_object_or_404(UserReply, pk=pk_rep)
@@ -88,8 +107,19 @@ def userreply_disapprove(request, pk_rep):
     return redirect('ann_detail', pk=userreply.ann.pk)
 
 
+@login_required()
 def userreply_remove(request, pk):
     ''' Delete comment - Button on 'article-detail' and 'dashboard' pages'''
     userreply = get_object_or_404(UserReply, pk=pk)
     userreply.delete()
     return redirect('ann_detail', pk=userreply.ann.pk)
+
+
+@login_required()
+def show_profile(request, pk):
+    user = User.objects.get(id=pk)
+    anns = Ann.objects.filter(author=user)
+    ann = get_object_or_404(Ann, pk=pk)
+    userreplys_count = ann.anns.count()
+
+    return render(request, 'profile.html', {'user': user, 'anns': anns, 'userreplys_count': userreplys_count})

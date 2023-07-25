@@ -1,6 +1,4 @@
 {% extends 'flatpages/default.html' %}
-{% load custom_filters %}
-{% load custom_tags %}
 {% load static %}
 <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
 
@@ -12,16 +10,23 @@ ann
 
 {% block content %}
 <h2>{{ ann.title }}:</h2>
-<h3>---{{ ann.time_in|date:'d M Y' }}---</h3>
+<h4>---{{ ann.time_in|date:'d M Y' }}---</h4>
+<h4>-{{ ann.author }}-</h4>
 <h1>{{ ann.text }}</h1>
 <img class="image" src="{{ ann.upload.url }}" alt="My image" width="300" height="300">
-
+{% if user.id == ann.author.id %}
 <form method="LINK" action="{% url 'edit_ann' pk=ann.pk %}">
     <input class="input_button"  type="submit" value="Править">
 </form>
+<form method="LINK" action="{% url 'ann_delete' pk=ann.pk %}">
+    <input class="input_button"  type="submit" value="Удалить">
+</form>
+{% endif %}
+{% if not user.id == ann.author.id %}
 <form method="LINK" action="{% url 'edit_userreply' pk=ann.pk %}">
     <input class="input_button"  type="submit" value="Отклик">
 </form>
+{% endif %}
 <hr>
 <h2>Отклики(<i>{{ userreplys_count }}</i>):</h2>
 {% for userreply in userreplys %}
